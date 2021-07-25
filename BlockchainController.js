@@ -121,7 +121,7 @@ class BlockchainController {
         });
     }
 
-        // This endpoint allows you to request the list of Stars registered by an owner
+    // This endpoint allows you to validate the blockchain
     validateBlockChain() {
             this.app.get("/blocks/validate", async (req, res) => {
                     try {
