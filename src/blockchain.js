@@ -82,6 +82,12 @@ class Blockchain {
         throw new Error("Cannot add invalid block.");
       }
       chain.push(block);
+      const errors = await this.validateChain();
+      if(errors && errors.length) {
+        //rollback block from the chain 
+        this.chain.pop();
+        throw new Error("failed to add block.");
+      }
       this.height = chain.length - 1;
       return block;
     } catch (e) {
@@ -129,7 +135,7 @@ class Blockchain {
   async submitStar(address, message, signature, star) {
     const requestTime = parseInt(message.split(":")[1]);
     const currentTime = parseInt(new Date().getTime().toString().slice(0, -3));
-    if (currentTime - requestTime >= 39 * 60) {
+    if (currentTime - requestTime >= 5 * 60) {
       throw new Error("Request timed out.");
     }
     if (bitcoinMessage.verify(message, address, signature)) {
